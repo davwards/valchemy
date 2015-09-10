@@ -1,0 +1,20 @@
+{
+  "name": "valchemy",
+  "version": "0.1.0",
+  "description": "An extensible, presentation-agnostic validation system",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "keywords": [
+    "validation"
+  ],
+  "author": "David Edwards",
+  "license": "MIT",
+  "devDependencies": {
+    "jasmine": "^2.3.2"
+  },
+  "dependencies": {
+    "lodash": "^3.10.1"
+  }
+}
