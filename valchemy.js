@@ -29,10 +29,13 @@ BasicValidation.prototype.pattern = addValidator(
 );
 
 BasicValidation.prototype.validate = function(value) {
-  return { valid: _.every(this.validators, function(validator) { return validator(value) }) };
+  return {
+    valid: _.every(this.validators, function(validator) {
+      return validator(value)
+    })
+  };
 };
 
 module.exports = {
   BasicValidation: BasicValidation
-
 };
