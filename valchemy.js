@@ -11,22 +11,8 @@ function addValidator(validatorBuilder) {
   }
 }
 
-BasicValidation.prototype.length = addValidator(
-  function(requiredLength) {
-    return function(value) {
-      return value != null && value.length === requiredLength;
-    }
-  }
-);
-
-BasicValidation.prototype.pattern = addValidator(
-  function(pattern) {
-    return function(value) {
-      if(value === null || value === undefined) { value = ''; }
-      return !! value.match(pattern);
-    }
-  }
-);
+BasicValidation.prototype.length = addValidator(require('./validators/length'));
+BasicValidation.prototype.pattern = addValidator(require('./validators/pattern'));
 
 BasicValidation.prototype.validate = function(value) {
   return {
