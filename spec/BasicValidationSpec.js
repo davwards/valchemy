@@ -48,4 +48,21 @@ describe('basic validation', function() {
       });
     });
   });
+
+  describe('with a custom error message', function() {
+    it('provides the given message on invalidation', function() {
+      var basicValidation = new v.BasicValidation()
+          .length(10).withMessage('The name must be 10 characters long');
+
+      expect(basicValidation.validate('Matt Rothenberg192').messages).toContain("The name must be 10 characters long");
+    })
+
+    it('does not provide the given message on validaton', function() {
+      var basicValidation = new v.BasicValidation()
+        .length(10).withMessage("The name must be 10 characters long");
+      expect(basicValidation.validate('Elizabethe').valid).toBeTruthy();
+      expect(basicValidation.messages).not.toContain("The name must be 10 characters long");
+    });
+
+  });
 });
