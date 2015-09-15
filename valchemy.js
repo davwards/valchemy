@@ -12,25 +12,34 @@ function addValidator(validatorBuilder) {
   }
 }
 
+function modifyValidator(validatorTransform) {
+  return function() {
+    var normalizedTransform = validatorTransform.apply(this, arguments);
+    if(normalizedTransform.length != 2)
+      throw "Invalid validator modifier! Must have 2 arguments (validator, value).";
+
+    var targetValidator = this.validators.pop();
+    var transformedValidator = function(value) {
+      return normalizedTransform.apply(this, [targetValidator, value]);
+    }.bind(this);
+
+    this.validators.push(transformedValidator);
+    return this;
+  }
+}
+
 BasicValidation.prototype.length = addValidator(require('./validators/length'));
 BasicValidation.prototype.pattern = addValidator(require('./validators/pattern'));
 
-BasicValidation.prototype.withMessage = function(message) {
-  var targetValidator = this.validators.pop();
-
-  var transformedValidator = function(value) {
+BasicValidation.prototype.withMessage = modifyValidator(function(message) {
+  return function(targetValidator, value) {
     var result = targetValidator(value);
     if ( ! result ) {
       this.messages.push(message);
     }
-
     return result;
   };
-
-  this.validators.push(transformedValidator.bind(this));
-
-  return this;
-};
+});
 
 BasicValidation.prototype.validate = function(value) {
   return {
