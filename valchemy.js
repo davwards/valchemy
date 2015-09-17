@@ -32,19 +32,24 @@ BasicValidation.prototype.pattern = addValidator(require('./validators/pattern')
 BasicValidation.prototype.withMessage = modifyValidator(function(message) {
   return function(targetValidator, value) {
     var result = targetValidator(value);
-    if ( ! result ) {
-      this.messages.push(message);
-    }
+    if ( ! result.valid ) { result.message = message; }
+
     return result;
   };
 });
 
 BasicValidation.prototype.validate = function(value) {
+  var results = _.map(this.validators, function(validator) {
+    return validator(value);
+  });
+
   return {
-    valid: _.every(this.validators, function(validator) {
-      return validator(value)
+    valid: _.every(results, function(result) {
+      return result.valid;
     }),
-    messages: this.messages
+    messages: _.map(results, function(result) {
+      return result.message;
+    })
   };
 };
 

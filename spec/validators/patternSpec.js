@@ -3,7 +3,10 @@ var patternValidator = require('../../validators/pattern');
 describe('pattern validator', function() {
   beforeEach(function() {
     this.doesValidate = function() {
-      return patternValidator(this.pattern)(this.value);
+      var validator = patternValidator(this.pattern);
+      var valueToValidate = this.value;
+      var result = validator(valueToValidate);
+      return result.valid;
     }
   });
 

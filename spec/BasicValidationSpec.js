@@ -61,7 +61,7 @@ describe('basic validation', function() {
       var basicValidation = new v.BasicValidation()
         .length(10).withMessage("The name must be 10 characters long");
       expect(basicValidation.validate('Elizabethe').valid).toBeTruthy();
-      expect(basicValidation.messages).not.toContain("The name must be 10 characters long");
+      expect(basicValidation.validate('Elizabethe').messages).not.toContain("The name must be 10 characters long");
     });
 
   });

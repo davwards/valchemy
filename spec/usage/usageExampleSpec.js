@@ -9,5 +9,4 @@ describe('Use Case #1: Validating a name for letters only pattern and length ', 
     expect(basicValidation.validate('Matt Rothenberg192').valid).toBeFalsy();
     expect(basicValidation.validate('Matt Rothenberg192').messages).toContain("The name must be 10 characters long");
   });
-
 });

@@ -3,7 +3,10 @@ var lengthValidator = require('../../validators/length');
 describe('length validator', function() {
   beforeEach(function() {
     this.doesValidate = function() {
-      return lengthValidator(this.allowedLength)(this.value);
+      var validator = lengthValidator(this.allowedLength);
+      var valueToValidate = this.value;
+      var result = validator(valueToValidate);
+      return result.valid;
     }
   });
 
