@@ -29,14 +29,7 @@ function modifyValidator(makeModifier) {
 BasicValidation.prototype.length = addValidator(require('./validators/length'));
 BasicValidation.prototype.pattern = addValidator(require('./validators/pattern'));
 
-BasicValidation.prototype.withMessage = modifyValidator(function(message) {
-  return function(targetValidator, value) {
-    var result = targetValidator(value);
-    if ( ! result.valid ) { result.message = message; }
-
-    return result;
-  };
-});
+BasicValidation.prototype.withMessage = modifyValidator(require('./modifiers/withMessage'));
 
 BasicValidation.prototype.validate = function(value) {
   var results = _.map(this.validators, function(validator) {
