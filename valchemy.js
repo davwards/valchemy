@@ -28,8 +28,11 @@ function modifyValidator(makeModifier) {
 
 BasicValidation.prototype.length = addValidator(require('./validators/length'));
 BasicValidation.prototype.pattern = addValidator(require('./validators/pattern'));
+BasicValidation.prototype.custom = addValidator(require('./validators/custom'));
 
 BasicValidation.prototype.withMessage = modifyValidator(require('./modifiers/withMessage'));
+BasicValidation.prototype.ifPresent = modifyValidator(require('./modifiers/ifPresent'));
+
 
 BasicValidation.prototype.validate = function(value) {
   var results = _.map(this.validators, function(validator) {
