@@ -2,11 +2,19 @@ var patternValidator = require('../../validators/pattern');
 
 describe('pattern validator', function() {
   beforeEach(function() {
-    this.doesValidate = function() {
+    this.validationResult = function() {
       var validator = patternValidator(this.pattern);
       var valueToValidate = this.value;
       var result = validator(valueToValidate);
-      return result.valid;
+      return result;
+    }
+
+    this.doesValidate = function() {
+      return this.validationResult().valid;
+    }
+
+    this.message = function() {
+      return this.validationResult().message;
     }
   });
 
@@ -18,6 +26,7 @@ describe('pattern validator', function() {
 
     it('invalidates', function() {
       expect(this.doesValidate()).toBeFalsy();
+      expect(this.message()).toEqual('Must match pattern /^\\d{3}$/.');
     });
   });
 
@@ -29,6 +38,7 @@ describe('pattern validator', function() {
 
     it('validates', function() {
       expect(this.doesValidate()).toBeTruthy();
+      expect(this.message()).toBeNull();
     });
   });
 

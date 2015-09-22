@@ -3,10 +3,13 @@ var v = require('../../valchemy.js');
 describe('Use Case #1: Validating a name for letters only pattern and length ', function() {
   it('invalidates', function() {
     var basicValidation = new v.BasicValidation()
-      .length(10).withMessage("The name must be 10 characters long")
-      .pattern(/[a-zA-Z]+/);
+      .length(10)
+      .pattern(/^[a-zA-Z]+$/)
+        .withMessage('Name must consist only of uppercase and lowercase letters.');
 
-    expect(basicValidation.validate('Matt Rothenberg192').valid).toBeFalsy();
-    expect(basicValidation.validate('Matt Rothenberg192').messages).toContain("The name must be 10 characters long");
+    var result = basicValidation.validate('Matt Rothenberg192');
+    expect(result.valid).toBeFalsy();
+    expect(result.messages).toContain('Must be exactly 10 characters.');
+    expect(result.messages).toContain('Name must consist only of uppercase and lowercase letters.');
   });
 });

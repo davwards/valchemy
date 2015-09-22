@@ -2,11 +2,19 @@ var lengthValidator = require('../../validators/length');
 
 describe('length validator', function() {
   beforeEach(function() {
-    this.doesValidate = function() {
+    this.validationResult = function() {
       var validator = lengthValidator(this.allowedLength);
       var valueToValidate = this.value;
       var result = validator(valueToValidate);
-      return result.valid;
+      return result;
+    }
+
+    this.doesValidate = function() {
+      return this.validationResult().valid;
+    }
+
+    this.message = function() {
+      return this.validationResult().message;
     }
   });
 
@@ -18,6 +26,7 @@ describe('length validator', function() {
 
     it('invalidates', function() {
       expect(this.doesValidate()).toBeFalsy();
+      expect(this.message()).toEqual('Must be exactly 9 characters.');
     });
   });
 
@@ -29,6 +38,7 @@ describe('length validator', function() {
 
     it('invalidates', function() {
       expect(this.doesValidate()).toBeFalsy();
+      expect(this.message()).toEqual('Must be exactly 10 characters.');
     });
   });
 
@@ -40,6 +50,7 @@ describe('length validator', function() {
 
     it('validates', function() {
       expect(this.doesValidate()).toBeTruthy();
+      expect(this.message()).toBeNull();
     });
   });
 
@@ -51,6 +62,7 @@ describe('length validator', function() {
 
     it('invalidates', function() {
       expect(this.doesValidate()).toBeFalsy();
+      expect(this.message()).toEqual('Must be exactly 10 characters.');
     });
   });
 
@@ -62,6 +74,7 @@ describe('length validator', function() {
 
     it('invalidates', function() {
       expect(this.doesValidate()).toBeFalsy();
+      expect(this.message()).toEqual('Must be exactly 10 characters.');
     });
   });
 
