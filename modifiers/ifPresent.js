@@ -1,11 +1,13 @@
 module.exports = function() {
-  return function(targetValidator, value) {
-    if (value === '' || value === undefined || value === null) {
-      return {
-        valid: true
-      };
-    } else {
-      return targetValidator(value);
+  return function(validator) {
+    return function(value) {
+      if (value === '' || value === undefined || value === null) {
+        return {
+          valid: true
+        };
+      } else {
+        return validator(value);
+      }
     }
   };
 };

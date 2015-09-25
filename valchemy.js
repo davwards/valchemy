@@ -5,9 +5,9 @@ function BasicValidation() {
   this.messages = [];
 }
 
-function addValidator(makeValidator) {
+function addValidator(validatorFactory) {
   return function() {
-    var validator = makeValidator.apply(this, arguments);
+    var validator = validatorFactory.apply(this, arguments);
     this.validators.push(validator);
     return this;
   }
@@ -18,9 +18,8 @@ function modifyValidator(makeModifier) {
     var modifier = makeModifier.apply(this, arguments).bind(this);
 
     var targetValidator = this.validators.pop();
-    this.validators.push(function(value) {
-      return modifier(targetValidator, value);
-    });
+    var modifiedValidator = modifier(targetValidator);
+    this.validators.push(modifiedValidator);
 
     return this;
   }

@@ -12,9 +12,7 @@ describe('withMessage modifier', function() {
     };
   }
 
-  function niceValidator(value) {
-    return niceModifier(meanValidator, value);
-  }
+  var niceValidator = niceModifier(meanValidator);
 
   it('preserves the validity of the original validation but overrides the message', function() {
 
