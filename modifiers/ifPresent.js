@@ -3,7 +3,8 @@ module.exports = function() {
     return function(value) {
       if (value === '' || value === undefined || value === null) {
         return {
-          valid: true
+          valid: true,
+          message: null
         };
       } else {
         return validator(value);
