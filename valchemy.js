@@ -2,7 +2,6 @@ var _ = require('lodash');
 
 function BasicValidation() {
   this.validators = [];
-  this.messages = [];
 }
 
 function buildStep(attach, factory) {
