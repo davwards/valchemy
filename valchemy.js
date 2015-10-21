@@ -5,11 +5,11 @@ function BasicValidation() {
   this.messages = [];
 }
 
-function lettuce(meat, factory) {
+function buildStep(attach, factory) {
   return function() {
-    var product = factory.apply(this, arguments);
+    var operation = factory.apply(this, arguments);
 
-    meat.call(this, product);
+    attach.call(this, operation);
 
     return this;
   }
@@ -25,12 +25,12 @@ function addModifier(modifier) {
   this.validators.push(modifiedValidator);
 }
 
-BasicValidation.prototype.length      = lettuce(addValidator, require('./validators/length'));
-BasicValidation.prototype.pattern     = lettuce(addValidator, require('./validators/pattern'));
-BasicValidation.prototype.custom      = lettuce(addValidator, require('./validators/custom'));
-BasicValidation.prototype.withMessage = lettuce(addModifier, require('./modifiers/withMessage'));
-BasicValidation.prototype.ifPresent   = lettuce(addModifier, require('./modifiers/ifPresent'));
-BasicValidation.prototype.forAttribute   = lettuce(addModifier, require('./modifiers/forAttribute'));
+BasicValidation.prototype.length      = buildStep(addValidator, require('./validators/length'));
+BasicValidation.prototype.pattern     = buildStep(addValidator, require('./validators/pattern'));
+BasicValidation.prototype.custom      = buildStep(addValidator, require('./validators/custom'));
+BasicValidation.prototype.withMessage = buildStep(addModifier, require('./modifiers/withMessage'));
+BasicValidation.prototype.ifPresent   = buildStep(addModifier, require('./modifiers/ifPresent'));
+BasicValidation.prototype.forAttribute   = buildStep(addModifier, require('./modifiers/forAttribute'));
 
 BasicValidation.prototype.validate = function(value) {
   var results = _.map(this.validators, function(validator) {
