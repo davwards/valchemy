@@ -30,6 +30,7 @@ BasicValidation.prototype.pattern     = lettuce(addValidator, require('./validat
 BasicValidation.prototype.custom      = lettuce(addValidator, require('./validators/custom'));
 BasicValidation.prototype.withMessage = lettuce(addModifier, require('./modifiers/withMessage'));
 BasicValidation.prototype.ifPresent   = lettuce(addModifier, require('./modifiers/ifPresent'));
+BasicValidation.prototype.forAttribute   = lettuce(addModifier, require('./modifiers/forAttribute'));
 
 BasicValidation.prototype.validate = function(value) {
   var results = _.map(this.validators, function(validator) {
@@ -40,9 +41,23 @@ BasicValidation.prototype.validate = function(value) {
     valid: _.every(results, function(result) {
       return result.valid;
     }),
-    messages: _.map(results, function(result) {
-      return result.message;
-    })
+    attributeMessages: _.chain(results)
+      .select(function(result) {
+        return result.forAttribute; })
+      .reduce(function(soFar, nextResult) {
+        soFar = (soFar === null ? {} : soFar);
+        soFar[nextResult.forAttribute] = nextResult.message;
+        return soFar; }, null)
+      .value()
+    ,
+    messages: _.chain(results)
+      .reject(function(result) {
+        return result.valid; })
+      .reject(function(result) {
+        return result.forAttribute; })
+      .map(function(result) {
+        return result.message; })
+      .value()
   };
 };
 

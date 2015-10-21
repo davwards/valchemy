@@ -65,60 +65,85 @@ describe('basic validation', function() {
     });
   });
 
-  // describe('when some of the results have a forAttribute key', function() {
-    // it('includes only the messages of the results without forAttribute keys in "messages"', function() {
-      // var baconValidator = function(value) {
-        // if(value === 'bacon')
-          // return { valid: true, message: null };
-        // else
-          // return { valid: false, message: 'Why is this not bacon' };
-      // };
+  describe('when some of the results have a forAttribute key', function() {
+    it('includes only the messages of the results without forAttribute keys in "messages"', function() {
+      var baconValidator = function(value) {
+        if(value === 'bacon')
+          return { valid: true, message: null };
+        else
+          return { valid: false, message: 'Why is this not bacon' };
+      };
 
-      // var threeSquareMealsValidator = function(value) {
-        // if(Object.keys(value).length >= 3)
-          // return { valid: true, message: null };
-        // else
-          // return { valid: false, message: 'I need three square meals a day!' };
-      // }
+      var threeSquareMealsValidator = function(value) {
+        if(Object.keys(value).length >= 3)
+          return { valid: true, message: null };
+        else
+          return { valid: false, message: 'I need three square meals a day!' };
+      }
 
-      // var menu = { breakfast: 'bacon', lunch: 'salad' };
+      var menu = { breakfast: 'bacon', lunch: 'salad' };
 
-      // var validation = new v.BasicValidation()
-                              // .custom(baconValidator).forAttribute('breakfast')
-                              // .custom(baconValidator).forAttribute('lunch')
-                              // .custom(baconValidator).forAttribute('dinner')
-                              // .custom(threeSquareMealsValidator);
+      var validation = new v.BasicValidation()
+                              .custom(baconValidator).forAttribute('breakfast')
+                              .custom(baconValidator).forAttribute('lunch')
+                              .custom(baconValidator).forAttribute('dinner')
+                              .custom(threeSquareMealsValidator);
 
-      // expect(validation.validate(menu).messages).toEqual(['I need three square meals a day!']);
-    // });
+      expect(validation.validate(menu).messages).toEqual(['I need three square meals a day!']);
+    });
 
-    // it('includes the messages of the results with forAttribute keys in an "attributeMessages" object', function() {
-      // var baconValidator = function(value) {
-        // if(value === 'bacon')
-          // return { valid: true, message: null };
-        // else
-          // return { valid: false, message: 'Why is this not bacon' };
-      // };
+    it('includes the messages of the results with forAttribute keys in an "attributeMessages" object', function() {
+      var baconValidator = function(value) {
+        if(value === 'bacon')
+          return { valid: true, message: null };
+        else
+          return { valid: false, message: 'Why is this not bacon' };
+      };
 
-      // var threeSquareMealsValidator = function(value) {
-        // if(Object.keys(value).length >= 3)
-          // return { valid: true, message: null };
-        // else
-          // return { valid: false, message: 'I need three square meals a day!' };
-      // }
+      var threeSquareMealsValidator = function(value) {
+        if(Object.keys(value).length >= 3)
+          return { valid: true, message: null };
+        else
+          return { valid: false, message: 'I need three square meals a day!' };
+      }
 
-      // var menu = { breakfast: 'bacon', lunch: 'salad' };
+      var menu = { breakfast: 'bacon', lunch: 'salad' };
 
-      // var validation = new v.BasicValidation()
-                              // .custom(baconValidator).forAttribute('breakfast')
-                              // .custom(baconValidator).forAttribute('lunch')
-                              // .custom(baconValidator).forAttribute('dinner')
-                              // .custom(threeSquareMealsValidator);
+      var validation = new v.BasicValidation()
+                              .custom(baconValidator).forAttribute('breakfast')
+                              .custom(baconValidator).forAttribute('lunch')
+                              .custom(baconValidator).forAttribute('dinner')
+                              .custom(threeSquareMealsValidator);
 
-      // expect(validation.validate(menu).attributeMessages).toEqual({
-        // lunch: 'Why is this not bacon',
-        // dinner: 'Why is this not bacon'
-      // });
-    // });
-  // });
+      expect(validation.validate(menu).attributeMessages).toEqual({
+        lunch: 'Why is this not bacon',
+        dinner: 'Why is this not bacon'
+      });
+    });
+
+    it('returns an empty attributeMessages object when none of the results have a forAttribute key', function() {
+      var baconValidator = function(value) {
+        if(value === 'bacon')
+          return { valid: true, message: null };
+        else
+          return { valid: false, message: 'Why is this not bacon' };
+      };
+
+      var threeSquareMealsValidator = function(value) {
+        if(Object.keys(value).length >= 3)
+          return { valid: true, message: null };
+        else
+          return { valid: false, message: 'I need three square meals a day!' };
+      }
+
+      var menu = { breakfast: 'bacon', lunch: 'salad' };
+
+      var validation = new v.BasicValidation()
+                              .custom(baconValidator)
+                              .custom(threeSquareMealsValidator);
+
+      expect(validation.validate(menu).attributeMessages).toEqual(null);
+    });
+
+  });
 });
