@@ -1,9 +1,12 @@
+var Result = require('../results/result');
+
 module.exports = function(message) {
   return function(validator) {
     return function(value) {
       var result = validator(value);
-      if ( ! result.valid ) { result.message = message };
-      return result;
+      return result.isValid() ?
+        result :
+        Result.clone(result, {errors: [message]});
     }
   };
 };

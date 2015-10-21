@@ -10,11 +10,11 @@ describe('length validator', function() {
     }
 
     this.doesValidate = function() {
-      return this.validationResult().valid;
+      return this.validationResult().isValid();
     }
 
     this.message = function() {
-      return this.validationResult().message;
+      return this.validationResult().errors[0];
     }
   });
 
@@ -50,7 +50,7 @@ describe('length validator', function() {
 
     it('validates', function() {
       expect(this.doesValidate()).toBeTruthy();
-      expect(this.message()).toBeNull();
+      expect(this.message()).toBeUndefined();
     });
   });
 

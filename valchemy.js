@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var Result = require('./results/result');
 
 function BasicValidation() {
   this.validators = [];
@@ -36,28 +37,33 @@ BasicValidation.prototype.validate = function(value) {
     return validator(value);
   });
 
-  return {
-    valid: _.every(results, function(result) {
-      return result.valid;
-    }),
-    attributeMessages: _.chain(results)
-      .select(function(result) {
-        return result.forAttribute; })
-      .reduce(function(soFar, nextResult) {
-        soFar = (soFar === null ? {} : soFar);
-        soFar[nextResult.forAttribute] = nextResult.message;
-        return soFar; }, null)
-      .value()
-    ,
-    messages: _.chain(results)
-      .reject(function(result) {
-        return result.valid; })
-      .reject(function(result) {
-        return result.forAttribute; })
-      .map(function(result) {
-        return result.message; })
-      .value()
-  };
+  var validity = _.every(results, function(result) {
+    return result.valid;
+  });
+
+  return new Result(
+    validity,
+    {
+      errors: _.chain(results)
+        .reject(function(result) {
+          return result.valid; })
+        .reject(function(result) {
+          return result.forAttribute; })
+        .map(function(result) {
+          return result.errors; })
+        .flatten()
+        .value(),
+
+      attributeErrors: _.chain(results)
+        .select(function(result) {
+          return result.forAttribute; })
+        .reduce(function(soFar, nextResult) {
+          soFar = (soFar === null ? {} : soFar);
+          soFar[nextResult.forAttribute] = nextResult.errors;
+          return soFar; }, null)
+        .value()
+    }
+  );
 };
 
 module.exports = {

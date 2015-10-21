@@ -1,10 +1,9 @@
+var valid = require('../results/valid');
+var invalid = require('../results/invalid');
+
 module.exports = function(requiredLength) {
   return function(value) {
-    var valid = value != null && value.length === requiredLength;
-
-    return {
-      valid: valid,
-      message: valid ? null : 'Must be exactly ' + requiredLength + ' characters.'
-    }
+    return (value != null && value.length === requiredLength) ?
+      valid() : invalid('Must be exactly ' + requiredLength + ' characters.');
   }
 };
