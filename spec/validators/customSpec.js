@@ -1,4 +1,6 @@
 var customValidator = require('../../validators/custom');
+var valid = require('../../results/valid');
+var invalid = require('../../results/invalid');
 
 describe('custom validator', function() {
   beforeEach(function() {
@@ -10,11 +12,11 @@ describe('custom validator', function() {
     }
 
     this.doesValidate = function() {
-      return this.validationResult().valid;
+      return this.validationResult().isValid();
     }
 
     this.message = function() {
-      return this.validationResult().message;
+      return this.validationResult().errors[0];
     }
   });
 
@@ -22,10 +24,9 @@ describe('custom validator', function() {
     beforeEach(function(){
       this.value = 'question';
       this.customValidator = function(value) {
-        return {
-          valid: value[0] == 'q',
-          message: value[0] == 'q' ? null : "Unacceptable!"
-        };
+        return (value[0] === 'q') ?
+          valid() :
+          invalid("Unacceptable!");
       }
     });
 

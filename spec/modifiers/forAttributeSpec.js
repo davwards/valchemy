@@ -1,8 +1,10 @@
+var valid = require('../../results/valid');
+var invalid = require('../../results/invalid');
+
 function baconValidator(value) {
-  if(value === 'bacon')
-    return { valid: true, message: null };
-  else
-    return { valid: false, message: 'Why is this not bacon' };
+  return (value === 'bacon') ?
+    valid() :
+    invalid('Why is this not bacon');
 }
 
 describe('forAttribute modifier', function() {
@@ -18,8 +20,8 @@ describe('forAttribute modifier', function() {
       lunch: 'salad',
     };
 
-    expect(baconForBreakfastValidator(menu).valid).toBeTruthy();
-    expect(baconForBreakfastValidator(menu).message).toBeNull();
+    expect(baconForBreakfastValidator(menu).isValid()).toBeTruthy();
+    expect(baconForBreakfastValidator(menu).errors).toEqual([]);
   });
 
   it('is invalid when the value of the given attribute fails the original validator', function() {
@@ -33,8 +35,8 @@ describe('forAttribute modifier', function() {
       lunch: 'salad',
     };
 
-    expect(baconForLunchValidator(menu).valid).toBeFalsy();
-    expect(baconForLunchValidator(menu).message).toEqual('Why is this not bacon');
+    expect(baconForLunchValidator(menu).isValid()).toBeFalsy();
+    expect(baconForLunchValidator(menu).errors).toEqual(['Why is this not bacon']);
   });
 
   it('includes the name of the attribute in the result when invalid', function() {

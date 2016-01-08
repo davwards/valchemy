@@ -1,11 +1,11 @@
+var valid = require('../results/valid');
+var invalid = require('../results/invalid');
+
 module.exports = function(pattern) {
   return function(value) {
     if (value === null || value === undefined) { value = ''; }
-    var valid = !! value.match(pattern);
 
-    return {
-      valid: valid,
-      message: valid ? null : 'Must match pattern ' + pattern + '.'
-    };
+    return (!! value.match(pattern)) ?
+      valid() : invalid('Must match pattern ' + pattern + '.');
   };
 };

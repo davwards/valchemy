@@ -1,4 +1,6 @@
 var v = require('../valchemy.js');
+var valid = require('../results/valid');
+var invalid = require('../results/invalid');
 
 describe('basic validation', function() {
   describe('with multiple validators', function() {
@@ -8,7 +10,7 @@ describe('basic validation', function() {
           .length(this.allowedLength)
           .pattern(this.pattern)
           .validate(this.value)
-          .valid;
+          .isValid();
       }
     });
 
@@ -54,31 +56,27 @@ describe('basic validation', function() {
       var basicValidation = new v.BasicValidation()
           .length(10).withMessage('The name must be 10 characters long');
 
-      expect(basicValidation.validate('Matt Rothenberg192').messages).toContain("The name must be 10 characters long");
+      expect(basicValidation.validate('Matt Rothenberg192').errors).toContain("The name must be 10 characters long");
     })
 
     it('does not provide the given message on validaton', function() {
       var basicValidation = new v.BasicValidation()
         .length(10).withMessage("The name must be 10 characters long");
       expect(basicValidation.validate('Elizabethe').valid).toBeTruthy();
-      expect(basicValidation.validate('Elizabethe').messages).not.toContain("The name must be 10 characters long");
+      expect(basicValidation.validate('Elizabethe').errors).not.toContain("The name must be 10 characters long");
     });
   });
 
   describe('when some of the results have a forAttribute key', function() {
     it('includes only the messages of the results without forAttribute keys in "messages"', function() {
       var baconValidator = function(value) {
-        if(value === 'bacon')
-          return { valid: true, message: null };
-        else
-          return { valid: false, message: 'Why is this not bacon' };
+        return (value === 'bacon') ?
+          valid() : invalid('Why is this not bacon');
       };
 
       var threeSquareMealsValidator = function(value) {
-        if(Object.keys(value).length >= 3)
-          return { valid: true, message: null };
-        else
-          return { valid: false, message: 'I need three square meals a day!' };
+        return (Object.keys(value).length >= 3) ?
+          valid() : invalid('I need three square meals a day!');
       }
 
       var menu = { breakfast: 'bacon', lunch: 'salad' };
@@ -89,22 +87,18 @@ describe('basic validation', function() {
                               .custom(baconValidator).forAttribute('dinner')
                               .custom(threeSquareMealsValidator);
 
-      expect(validation.validate(menu).messages).toEqual(['I need three square meals a day!']);
+      expect(validation.validate(menu).errors).toEqual(['I need three square meals a day!']);
     });
 
     it('includes the messages of the results with forAttribute keys in an "attributeMessages" object', function() {
       var baconValidator = function(value) {
-        if(value === 'bacon')
-          return { valid: true, message: null };
-        else
-          return { valid: false, message: 'Why is this not bacon' };
+        return (value === 'bacon') ?
+          valid() : invalid('Why is this not bacon');
       };
 
       var threeSquareMealsValidator = function(value) {
-        if(Object.keys(value).length >= 3)
-          return { valid: true, message: null };
-        else
-          return { valid: false, message: 'I need three square meals a day!' };
+        return (Object.keys(value).length >= 3) ?
+          valid() : invalid('I need three square meals a day!');
       }
 
       var menu = { breakfast: 'bacon', lunch: 'salad' };
@@ -115,25 +109,21 @@ describe('basic validation', function() {
                               .custom(baconValidator).forAttribute('dinner')
                               .custom(threeSquareMealsValidator);
 
-      expect(validation.validate(menu).attributeMessages).toEqual({
-        lunch: 'Why is this not bacon',
-        dinner: 'Why is this not bacon'
+      expect(validation.validate(menu).attributeErrors).toEqual({
+        lunch: ['Why is this not bacon'],
+        dinner: ['Why is this not bacon']
       });
     });
 
     it('returns an empty attributeMessages object when none of the results have a forAttribute key', function() {
       var baconValidator = function(value) {
-        if(value === 'bacon')
-          return { valid: true, message: null };
-        else
-          return { valid: false, message: 'Why is this not bacon' };
+        return (value === 'bacon') ?
+          valid() : invalid('Why is this not bacon');
       };
 
       var threeSquareMealsValidator = function(value) {
-        if(Object.keys(value).length >= 3)
-          return { valid: true, message: null };
-        else
-          return { valid: false, message: 'I need three square meals a day!' };
+        return (Object.keys(value).length >= 3) ?
+          valid() : invalid('I need three square meals a day!');
       }
 
       var menu = { breakfast: 'bacon', lunch: 'salad' };
@@ -142,7 +132,7 @@ describe('basic validation', function() {
                               .custom(baconValidator)
                               .custom(threeSquareMealsValidator);
 
-      expect(validation.validate(menu).attributeMessages).toEqual(null);
+      expect(validation.validate(menu).attributeErrors).toEqual(null);
     });
 
   });
