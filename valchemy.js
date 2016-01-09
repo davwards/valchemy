@@ -1,8 +1,18 @@
 var _ = require('lodash');
 var Result = require('./results/result');
+var usingValidation = require('./validators/using');
+var forAttribute = require('./modifiers/forAttribute');
 
-function BasicValidation() {
-  this.validators = [];
+function BasicValidation(schema) {
+  if(schema) {
+    this.validators = _.map(schema, function(validation, attribute) {
+      var attributeModifier = forAttribute(attribute);
+      var validator = usingValidation(validation)
+      return attributeModifier(validator);
+    });
+  } else {
+    this.validators = [];
+  }
 }
 
 function buildStep(attach, factory) {
