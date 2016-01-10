@@ -4,10 +4,16 @@ function Result(validity, options) {
   options = options || {};
 
   this.valid = validity;
-  this.forAttribute = options.forAttribute;
   this.errors = options.errors || [];
   this.attributeErrors = options.attributeErrors || {};
 }
+
+Result.asAttributeError = function(result, attribute) {
+  return new Result(result.isValid(), {
+    errors: [],
+    attributeErrors: _.set({}, attribute, result)
+  });
+};
 
 Result.clone = function(result, overrides) {
   return new Result(
@@ -18,7 +24,6 @@ Result.clone = function(result, overrides) {
 
 function optionsFor(result) {
   return {
-    forAttribute: result.forAttribute,
     errors: result.errors,
     attributeErrors: result.attributeErrors
   };
@@ -26,14 +31,6 @@ function optionsFor(result) {
 
 Result.prototype.isValid = function() {
   return this.valid;
-};
-
-Result.prototype.isBaseError = function() {
-  return !this.isAttributeError();
-};
-
-Result.prototype.isAttributeError = function() {
-  return !!this.forAttribute;
 };
 
 module.exports = Result;

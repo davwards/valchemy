@@ -6,7 +6,7 @@ module.exports = function(attribute) {
       var result = validator(obj[attribute]);
       return result.isValid() ?
         result :
-        Result.clone(result, {forAttribute: attribute});
+        Result.asAttributeError(result, attribute);
     }
   }
 };

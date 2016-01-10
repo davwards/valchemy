@@ -38,7 +38,6 @@ describe('Use Case #2: Validating a whole object according to a given schema', f
     expect(result.attributeErrors.middleInitial.errors).toContain('Middle initial must be exactly 1 character long');
 
   });
-
 });
 
 describe('Use Case #3: Validating nested objects', function() {
