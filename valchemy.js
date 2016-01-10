@@ -5,7 +5,7 @@ var usingValidation = require('./validators/using');
 var forAttribute = require('./modifiers/forAttribute');
 var combineResults = require('./combineResults');
 
-function BasicValidation(schema) {
+function Validation(schema) {
   if(schema) {
     this.validators = _.map(schema, function(validation, attribute) {
       var attributeModifier = forAttribute(attribute);
@@ -43,20 +43,18 @@ function resultOfValidatorOn(value) {
   }
 }
 
-BasicValidation.prototype.length      = buildStep(addValidator, require('./validators/length'));
-BasicValidation.prototype.pattern     = buildStep(addValidator, require('./validators/pattern'));
-BasicValidation.prototype.custom      = buildStep(addValidator, require('./validators/custom'));
-BasicValidation.prototype.withMessage = buildStep(addModifier, require('./modifiers/withMessage'));
-BasicValidation.prototype.ifPresent   = buildStep(addModifier, require('./modifiers/ifPresent'));
-BasicValidation.prototype.forAttribute   = buildStep(addModifier, require('./modifiers/forAttribute'));
+Validation.prototype.length      = buildStep(addValidator, require('./validators/length'));
+Validation.prototype.pattern     = buildStep(addValidator, require('./validators/pattern'));
+Validation.prototype.custom      = buildStep(addValidator, require('./validators/custom'));
+Validation.prototype.withMessage = buildStep(addModifier, require('./modifiers/withMessage'));
+Validation.prototype.ifPresent   = buildStep(addModifier, require('./modifiers/ifPresent'));
+Validation.prototype.forAttribute   = buildStep(addModifier, require('./modifiers/forAttribute'));
 
-BasicValidation.prototype.validate = function(value) {
+Validation.prototype.validate = function(value) {
   return _.chain(this.validators)
     .map(resultOfValidatorOn(value))
     .reduce(combineResults, valid())
     .value();
 };
 
-module.exports = {
-  BasicValidation: BasicValidation
-};
+module.exports = function(schema) { return new Validation(schema); };

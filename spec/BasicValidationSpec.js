@@ -1,4 +1,4 @@
-var v = require('../valchemy.js');
+var Validation = require('../valchemy.js');
 var valid = require('../results/valid');
 var invalid = require('../results/invalid');
 
@@ -6,7 +6,7 @@ describe('basic validation', function() {
   describe('with multiple validators', function() {
     beforeEach(function() {
       this.doesValidate = function() {
-        return new v.BasicValidation()
+        return Validation()
           .length(this.allowedLength)
           .pattern(this.pattern)
           .validate(this.value)
@@ -53,14 +53,14 @@ describe('basic validation', function() {
 
   describe('with a custom error message', function() {
     it('provides the given message on invalidation', function() {
-      var basicValidation = new Validation()
+      var basicValidation = Validation()
           .length(10).withMessage('The name must be 10 characters long');
 
       expect(basicValidation.validate('Matt Rothenberg192').errors).toContain("The name must be 10 characters long");
     })
 
     it('does not provide the given message on validaton', function() {
-      var basicValidation = new Validation()
+      var basicValidation = Validation()
         .length(10).withMessage("The name must be 10 characters long");
       expect(basicValidation.validate('Elizabethe').valid).toBeTruthy();
       expect(basicValidation.validate('Elizabethe').errors).not.toContain("The name must be 10 characters long");

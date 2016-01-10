@@ -1,8 +1,8 @@
-var v = require('../../valchemy.js');
+var Validation = require('../../valchemy.js');
 
 describe('Use Case #1: Validating a name for letters only pattern and length ', function() {
   it('invalidates', function() {
-    var basicValidation = new v.BasicValidation()
+    var basicValidation = Validation()
       .length(10)
       .pattern(/^[a-zA-Z]+$/)
         .withMessage('Name must consist only of uppercase and lowercase letters.');
@@ -16,14 +16,14 @@ describe('Use Case #1: Validating a name for letters only pattern and length ', 
 
 describe('Use Case #2: Validating a whole object according to a given schema', function() {
   it('invalidates', function() {
-    var validation = new v.BasicValidation({
-      firstName: new v.BasicValidation()
+    var validation = Validation({
+      firstName: Validation()
                       .pattern(/^[a-zA-Z]+$/)
                       .withMessage('First name must consist only of uppercase and lowercase letters.'),
-      lastName: new v.BasicValidation()
+      lastName: Validation()
                       .pattern(/^[a-zA-Z]+$/)
                       .withMessage('Last name must consist only of uppercase and lowercase letters.'),
-      middleInitial: new v.BasicValidation()
+      middleInitial: Validation()
                       .length(1)
                       .withMessage('Middle initial must be exactly 1 character long')
     });
@@ -42,13 +42,13 @@ describe('Use Case #2: Validating a whole object according to a given schema', f
 
 describe('Use Case #3: Validating nested objects', function() {
   it('invalidates', function() {
-    var validation = new v.BasicValidation({
-      name: new v.BasicValidation().length(4),
-      address: new v.BasicValidation({
-        street: new v.BasicValidation()
+    var validation = Validation({
+      name: Validation().length(4),
+      address: Validation({
+        street: Validation()
                     .pattern(/^[0-9a-zA-Z\s]+$/)
                     .withMessage('no special characters'),
-        zip: new v.BasicValidation()
+        zip: Validation()
                     .pattern(/^\d+$/)
                     .withMessage('only digits')
       })
