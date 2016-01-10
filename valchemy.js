@@ -1,7 +1,9 @@
 var _ = require('lodash');
 var Result = require('./results/result');
+var valid = require('./results/valid');
 var usingValidation = require('./validators/using');
 var forAttribute = require('./modifiers/forAttribute');
+var combineResults = require('./combineResults');
 
 function BasicValidation(schema) {
   if(schema) {
@@ -35,6 +37,12 @@ function addModifier(modifier) {
   this.validators.push(modifiedValidator);
 }
 
+function resultOfValidatorOn(value) {
+  return function(validator) {
+    return validator(value);
+  }
+}
+
 BasicValidation.prototype.length      = buildStep(addValidator, require('./validators/length'));
 BasicValidation.prototype.pattern     = buildStep(addValidator, require('./validators/pattern'));
 BasicValidation.prototype.custom      = buildStep(addValidator, require('./validators/custom'));
@@ -43,37 +51,10 @@ BasicValidation.prototype.ifPresent   = buildStep(addModifier, require('./modifi
 BasicValidation.prototype.forAttribute   = buildStep(addModifier, require('./modifiers/forAttribute'));
 
 BasicValidation.prototype.validate = function(value) {
-  var results = _.map(this.validators, function(validator) {
-    return validator(value);
-  });
-
-  var validity = _.every(results, function(result) {
-    return result.valid;
-  });
-
-  return new Result(
-    validity,
-    {
-      errors: _.chain(results)
-        .reject(function(result) {
-          return result.valid; })
-        .reject(function(result) {
-          return result.forAttribute; })
-        .map(function(result) {
-          return result.errors; })
-        .flatten()
-        .value(),
-
-      attributeErrors: _.chain(results)
-        .select(function(result) {
-          return result.forAttribute; })
-        .reduce(function(soFar, nextResult) {
-          soFar = (soFar === null ? {} : soFar);
-          soFar[nextResult.forAttribute] = nextResult.errors;
-          return soFar; }, null)
-        .value()
-    }
-  );
+  return _.chain(this.validators)
+    .map(resultOfValidatorOn(value))
+    .reduce(combineResults, valid())
+    .value();
 };
 
 module.exports = {

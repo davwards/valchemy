@@ -110,8 +110,8 @@ describe('basic validation', function() {
                               .custom(threeSquareMealsValidator);
 
       expect(validation.validate(menu).attributeErrors).toEqual({
-        lunch: ['Why is this not bacon'],
-        dinner: ['Why is this not bacon']
+        lunch: invalid('Why is this not bacon'),
+        dinner: invalid('Why is this not bacon')
       });
     });
 
@@ -132,7 +132,7 @@ describe('basic validation', function() {
                               .custom(baconValidator)
                               .custom(threeSquareMealsValidator);
 
-      expect(validation.validate(menu).attributeErrors).toEqual(null);
+      expect(validation.validate(menu).attributeErrors).toEqual({});
     });
 
   });

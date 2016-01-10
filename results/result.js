@@ -1,10 +1,12 @@
 var _ = require('lodash');
 
 function Result(validity, options) {
+  options = options || {};
+
   this.valid = validity;
   this.forAttribute = options.forAttribute;
   this.errors = options.errors || [];
-  this.attributeErrors = options.attributeErrors || null;
+  this.attributeErrors = options.attributeErrors || {};
 }
 
 Result.clone = function(result, overrides) {
