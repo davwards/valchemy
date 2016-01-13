@@ -10,7 +10,7 @@ function combineResults(result1, result2) {
     result1.isValid() && result2.isValid(),
     {
       errors: result1.errors.concat(result2.errors),
-      attributeErrors: _.merge({},
+      attributeErrors: _.mergeWith({},
         result1.attributeErrors,
         result2.attributeErrors,
         combineResults
