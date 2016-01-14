@@ -44,6 +44,7 @@ function resultOfValidatorOn(value) {
 }
 
 Validation.prototype.length      = buildStep(addValidator, require('./validators/length'));
+Validation.prototype.maxlength   = buildStep(addValidator, require('./validators/maxlength'));
 Validation.prototype.pattern     = buildStep(addValidator, require('./validators/pattern'));
 Validation.prototype.custom      = buildStep(addValidator, require('./validators/custom'));
 Validation.prototype.withMessage = buildStep(addModifier, require('./modifiers/withMessage'));
