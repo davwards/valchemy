@@ -43,12 +43,17 @@ function resultOfValidatorOn(value) {
   }
 }
 
-Validation.prototype.length      = buildStep(addValidator, require('./validators/length'));
-Validation.prototype.pattern     = buildStep(addValidator, require('./validators/pattern'));
-Validation.prototype.custom      = buildStep(addValidator, require('./validators/custom'));
-Validation.prototype.withMessage = buildStep(addModifier, require('./modifiers/withMessage'));
-Validation.prototype.ifPresent   = buildStep(addModifier, require('./modifiers/ifPresent'));
-Validation.prototype.forAttribute   = buildStep(addModifier, require('./modifiers/forAttribute'));
+function commandsFromManifest(addWith, manifest) {
+  return _.mapValues(manifest, function(factory, name) {
+    return buildStep(addWith, factory);
+  });
+}
+
+_.merge(
+  Validation.prototype,
+  commandsFromManifest(addValidator, require('./validatorManifest')),
+  commandsFromManifest(addModifier, require('./modifierManifest'))
+);
 
 Validation.prototype.validate = function(value) {
   return _.chain(this.validators)
