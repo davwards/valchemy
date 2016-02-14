@@ -6,15 +6,14 @@ var forAttribute = require('./modifiers/forAttribute');
 var combineResults = require('./combineResults');
 
 function Validation(schema) {
-  if(schema) {
-    this.validators = _.map(schema, function(validation, attribute) {
-      var attributeModifier = forAttribute(attribute);
-      var validator = usingValidation(validation)
-      return attributeModifier(validator);
-    });
-  } else {
-    this.validators = [];
-  }
+  this.validators = schema ? validatorsFromSchema(schema) : [];
+}
+
+function validatorsFromSchema(schema) {
+  return _.map(schema, function(validation, attribute) {
+    var attributeModifier = forAttribute(attribute);
+    return attributeModifier(usingValidation(validation));
+  });
 }
 
 function buildStep(attach, factory) {
