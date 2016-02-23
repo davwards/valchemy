@@ -1,19 +1,11 @@
 var _ = require('lodash');
-var usingValidation = require('./validators/using');
-var forAttribute = require('./modifiers/forAttribute');
 var map = require('lodash/fp/map');
 
+var validatorsFromSchema = require('./infrastructure/validatorsFromSchema');
 var overallResult = require('./infrastructure/overallResult');
 
 function Validation(schema) {
   this.validators = schema ? validatorsFromSchema(schema) : [];
-}
-
-function validatorsFromSchema(schema) {
-  return _.map(schema, function(validation, attribute) {
-    var attributeModifier = forAttribute(attribute);
-    return attributeModifier(usingValidation(validation));
-  });
 }
 
 function buildStep(attach, factory) {
