@@ -18,6 +18,6 @@ function combineResults(result1, result2) {
       )
     }
   );
-};
+}
 
 module.exports = combineResults;

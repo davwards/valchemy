@@ -4,7 +4,7 @@
   "description": "An extensible, presentation-agnostic validation system",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine"
+    "test": "jasmine && eslint --ignore-pattern spec/ **/*.js && eslint --env jasmine spec/**/*.js"
   },
   "keywords": [
     "validation"
@@ -12,6 +12,7 @@
   "author": "David Edwards",
   "license": "MIT",
   "devDependencies": {
+    "eslint": "^2.2.0",
     "jasmine": "^2.3.2"
   },
   "dependencies": {

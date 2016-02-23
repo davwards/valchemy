@@ -7,6 +7,6 @@ module.exports = function(attribute) {
       return result.isValid() ?
         result :
         Result.asAttributeError(result, attribute);
-    }
-  }
+    };
+  };
 };

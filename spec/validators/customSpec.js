@@ -9,15 +9,15 @@ describe('custom validator', function() {
       var valueToValidate = this.value;
       var result = validator(valueToValidate);
       return result;
-    }
+    };
 
     this.doesValidate = function() {
       return this.validationResult().isValid();
-    }
+    };
 
     this.message = function() {
       return this.validationResult().errors[0];
-    }
+    };
   });
 
   describe('when we pass a custom validator function that validates', function() {
@@ -26,8 +26,8 @@ describe('custom validator', function() {
       this.customValidator = function(value) {
         return (value[0] === 'q') ?
           valid() :
-          invalid("Unacceptable!");
-      }
+          invalid('Unacceptable!');
+      };
     });
 
     it('validates all words that start with q', function() {
@@ -37,7 +37,7 @@ describe('custom validator', function() {
     it('invalidates all words that start with the letter a', function() {
       this.value = 'Apple';
       expect(this.doesValidate()).toBeFalsy();
-      expect(this.message()).toEqual("Unacceptable!");
+      expect(this.message()).toEqual('Unacceptable!');
     });
   });
 });

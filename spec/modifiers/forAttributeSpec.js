@@ -17,7 +17,7 @@ describe('forAttribute modifier', function() {
 
     var menu = {
       breakfast: 'bacon',
-      lunch: 'salad',
+      lunch: 'salad'
     };
 
     expect(baconForBreakfastValidator(menu).isValid()).toBeTruthy();
@@ -32,7 +32,7 @@ describe('forAttribute modifier', function() {
 
     var menu = {
       breakfast: 'bacon',
-      lunch: 'salad',
+      lunch: 'salad'
     };
 
     expect(baconForLunchValidator(menu).isValid()).toBeFalsy();

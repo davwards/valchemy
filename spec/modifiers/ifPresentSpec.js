@@ -4,7 +4,7 @@ var valid = require('../../results/valid.js');
 
 describe('withMessage modifier', function() {
   var alwaysInvalidValidator = jasmine.createSpy('alwaysInvalidValidator')
-    .and.callFake(function(value) {
+    .and.callFake(function() {
       return invalid('ABSOLUTELY NOT');
     });
 

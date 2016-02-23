@@ -5,6 +5,6 @@ module.exports = function(condition) {
     return function(value) {
       if( typeof(condition) == 'function') condition = condition();
       return condition ? validator(value) : valid();
-    }
-  }
-}
+    };
+  };
+};

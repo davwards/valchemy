@@ -5,6 +5,6 @@ module.exports = function() {
     return function(value) {
       return (value === '' || value === undefined || value === null) ?
         valid() : validator(value);
-    }
+    };
   };
 };

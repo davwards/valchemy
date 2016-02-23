@@ -7,7 +7,7 @@ describe('using validator', function() {
       validate: function(val) {
         return invalid(val + ' is unacceptable!');
       }
-    }
+    };
 
     var validator = usingValidator(fakeValidation);
     var value = 'foobar';
@@ -23,7 +23,7 @@ describe('using validator', function() {
       validate: function(val) {
         return invalid(val + ' is ' + this.localProperty);
       }
-    }
+    };
 
     var validator = usingValidator(fakeValidation);
     var value = 'foobar';

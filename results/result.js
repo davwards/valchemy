@@ -23,7 +23,7 @@ Result.clone = function(result, overrides) {
     result.isValid(),
     merge(optionsFor(result), overrides)
   );
-}
+};
 
 function optionsFor(result) {
   return {

@@ -48,8 +48,8 @@ describe('Manifests', function() {
         var noConflicts = util.equals(conflicts, {}, customEqualityTesters);
         return { pass: noConflicts, message: conflictErrorMessage(conflicts) };
       }
-    }
-  };
+    };
+  }
 
   var conflictErrorMessage = _.compose(
     function(lines) {

@@ -16,4 +16,4 @@ module.exports = function(mapOverValidators) {
     mapOverValidators,
     resultForValue
   );
-}
+};

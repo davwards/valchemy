@@ -4,13 +4,13 @@ var merge = require('lodash/fp/merge');
 var mergeAll = reduce(merge);
 
 var validatorsFromSchema = require('./infrastructure/validatorsFromSchema');
-var loadBuilderCommandsFromManifests = require('./infrastructure/loadBuilderCommandsFromManifests')
+var loadBuilderCommandsFromManifests = require('./infrastructure/loadBuilderCommandsFromManifests');
 var overallResult = require('./infrastructure/overallResult');
 
 var STANDARD_MANIFESTS = [
   require('./manifests/validatorManifest'),
   require('./manifests/modifierManifest')
-]
+];
 
 function Validation(schema) {
   this.validators = schema ? validatorsFromSchema(schema) : [];

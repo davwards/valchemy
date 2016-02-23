@@ -7,15 +7,15 @@ describe('pattern validator', function() {
       var valueToValidate = this.value;
       var result = validator(valueToValidate);
       return result;
-    }
+    };
 
     this.doesValidate = function() {
       return this.validationResult().isValid();
-    }
+    };
 
     this.message = function() {
       return this.validationResult().errors[0];
-    }
+    };
   });
 
   describe('when the value doesn\'t match the pattern', function() {

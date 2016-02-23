@@ -7,6 +7,6 @@ module.exports = function(message) {
       return result.isValid() ?
         result :
         Result.clone(result, {errors: [message]});
-    }
+    };
   };
 };
