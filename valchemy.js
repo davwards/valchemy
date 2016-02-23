@@ -3,6 +3,8 @@ var reduce = require('lodash/fp/reduce');
 var merge = require('lodash/fp/merge');
 var mergeAll = reduce(merge);
 
+var valid = require('./results/valid');
+var invalid = require('./results/invalid');
 var validatorsFromSchema = require('./infrastructure/validatorsFromSchema');
 var loadBuilderCommandsFromManifests = require('./infrastructure/loadBuilderCommandsFromManifests');
 var overallResult = require('./infrastructure/overallResult');
@@ -24,5 +26,7 @@ Validation.prototype = mergeAll(
 );
 
 Validation.prototype.validate = overallResult(mapOverValidators);
+Validation.valid = valid;
+Validation.invalid = invalid;
 
 module.exports = function(schema) { return new Validation(schema); };
