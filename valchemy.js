@@ -1,4 +1,3 @@
-var _ = require('lodash');
 var map = require('lodash/fp/map');
 var reduce = require('lodash/fp/reduce');
 var merge = require('lodash/fp/merge');

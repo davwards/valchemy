@@ -1,4 +1,7 @@
-var _ = require('lodash');
+var set = require('lodash/set');
+var merge = require('lodash/merge');
+
+function keyValuePair(k,v) { return set({},k,v); }
 
 function Result(validity, options) {
   options = options || {};
@@ -11,14 +14,14 @@ function Result(validity, options) {
 Result.asAttributeError = function(result, attribute) {
   return new Result(result.isValid(), {
     errors: [],
-    attributeErrors: _.set({}, attribute, result)
+    attributeErrors: keyValuePair(attribute, result)
   });
 };
 
 Result.clone = function(result, overrides) {
   return new Result(
     result.isValid(),
-    _.assign(optionsFor(result), overrides)
+    merge(optionsFor(result), overrides)
   );
 }
 
