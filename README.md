@@ -29,7 +29,7 @@ executable-test form.
 
 Validation objects are built via a fluent interface:
 
-```javascript
+````javascript
 var Validation = require('valchemy');
 
 firstNameValidation = Validation().present().maxLength(10);
@@ -41,7 +41,7 @@ missingNameResult.errors // ['Must be present']
 longNameResult = firstNameValidation.validate('Rumplestiltskin');
 longNameResult.isValid() // false
 longNameResult.errors // ['Must be no longer than 10 characters']
-```
+````
 
 ### Modifying validators
 
@@ -55,7 +55,7 @@ validation's `validate` method.
 *Modifier* methods like `withMessage` and `onlyIf` make a change to the last
 added validator. For example:
 
-```javascript
+````javascript
 firstNameValidation = Validation().present().maxLength(10).withMessage('That name is too long!');
 
 missingNameResult = firstNameValidation.validate('');
@@ -65,7 +65,7 @@ missingNameResult.errors // ['Must be present']
 result = firstNameValidation.validate('Rumplestiltskin');
 result.isValid() // false
 result.errors // ['That name is too long!']
-```
+````
 
 The call to `withMessage` modifies just the previous validator--in this case,
 `maxLength`--so values which fail the `present` validator still get the default
@@ -77,26 +77,26 @@ specified custom message.
 You can also create validations for objects whose attributes you want to
 validate. The `Validation` method accepts an object schema:
 
-```javascript
+````javascript
 userValidation = Validation({
   firstName: Validation()
-               .present()
-               .maxLength(10),
+    .present()
+    .maxLength(10),
   middleInitial: Validation()
-                   .length(1)
-                   .ifPresent(),
+    .length(1)
+    .ifPresent(),
   lastName: Validation()
-              .present()
-              .maxLength(10),
+    .present()
+    .maxLength(10),
   address: Validation({
     line1: Validation()
-             .present()
-             .maxLength(20),
+      .present()
+      .maxLength(20),
     line2: Validation
-             .maxLength(10),
+      .maxLength(10),
     zipCode: Validation
-               .present()
-               .pattern(/\d{5}/).withMessage('Zip code must be 5 digits')
+      .present()
+      .pattern(/\d{5}/).withMessage('Zip code must be 5 digits')
   })
 });
 
@@ -115,7 +115,7 @@ result = userValidation.validate(user)
 result.isValid() // false
 result.attributeErrors['lastName'].errors // ['Must be no longer than 10 characters']
 result.attributeErrors['address'].attributeErrors['zipCode'].errors // ['Zip code must be 5 digits']
-```
+````
 
 ### Custom validators
 
@@ -126,7 +126,7 @@ value to validate) and returns a *result object*. Result objects can be
 constructed via `Validation.valid()` and `Validation.invalid('some message')`
 (where `Validation` is the export of the valchemy.js module).
 
-```
+````javascript
 function baconValidator(value) {
   return value === 'bacon' ?
     Validation.valid() :
@@ -146,22 +146,22 @@ var menu = {
 };
 
 menuValidation.validate(menu).attributeErrors['dinner'].errors // ['why is this not bacon']
-```
+````
 
 ## Contributing
 
 We're looking for contributions! Once you've forked/cloned the repo, run the
 following in the top level directory to install the project's dependencies:
 
-```bash
+````bash
 $ npm install
-```
+````
 
 Then, run the tests:
 
-```bash
+````bash
 $ npm test
-```
+````
 
 ### Background
 
@@ -208,7 +208,7 @@ To add support for a new modifier, the process is similar. Every file in the
 If you aren't familiar with higher order functions, the modifier modules can
 look a little spooky. They are typically shaped like this:
 
-```javascript
+````javascript
 module.exports = function(someArgument, anotherArgument) {
   return function(validator) {
     return function(value) { // IS IT FUNCTIONS ALL THE WAY DOWN???
@@ -217,12 +217,12 @@ module.exports = function(someArgument, anotherArgument) {
     }
   };
 };
-```
+````
 
 But when the functions start swimming together, just fall back on the
 definitions of things.
 
-```javascript
+````javascript
 /* Any module in modifiers/ exports a modifier factory. */
 
 module.exports = function(someArgument, anotherArgument) { // This is a modifier factory, which is a function that takes some arguments...
@@ -233,7 +233,7 @@ module.exports = function(someArgument, anotherArgument) { // This is a modifier
     }
   };
 };
-```
+````
 
 As long as your module conforms to these rules, all the machinery that wires
 things up and allows validators to be chained together and modifiers to act on
