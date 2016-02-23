@@ -48,9 +48,8 @@ describe('maxlength validator', function() {
       this.maximumLength = 10;
     });
 
-    it('invalidates', function() {
-      expect(this.doesValidate()).toBeFalsy();
-      expect(this.message()).toEqual('Must be at least one character long.');
+    it('validates', function() {
+      expect(this.doesValidate()).toBeTruthy();
     });
   });
 
@@ -60,11 +59,8 @@ describe('maxlength validator', function() {
       this.maximumLength = 10;
     });
 
-    it('invalidates', function() {
-      expect(this.doesValidate()).toBeFalsy();
-      expect(this.message()).toEqual('Must be at least one character long.');
+    it('validates', function() {
+      expect(this.doesValidate()).toBeTruthy();
     });
   });
-
-  // How do we want to handle numerical 0 in this case?
 });
