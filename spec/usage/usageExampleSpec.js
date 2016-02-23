@@ -1,7 +1,7 @@
 var Validation = require('../../valchemy.js');
 
-describe('Use Case #1: Validating a name for letters only pattern and length ', function() {
-  it('invalidates', function() {
+describe('Validating a name for letters only pattern and length ', function() {
+  it('includes error messages for all the failing validators', function() {
     var basicValidation = Validation()
       .length(10)
       .pattern(/^[a-zA-Z]+$/)
@@ -14,18 +14,18 @@ describe('Use Case #1: Validating a name for letters only pattern and length ', 
   });
 });
 
-describe('Use Case #2: Validating a whole object according to a given schema', function() {
-  it('invalidates', function() {
+describe('Validating a whole object according to a given schema', function() {
+  it('uses an object whose keys are attribute names and whose values are Validation objects', function() {
     var validation = Validation({
       firstName: Validation()
-                      .pattern(/^[a-zA-Z]+$/)
-                      .withMessage('First name must consist only of uppercase and lowercase letters.'),
+        .pattern(/^[a-zA-Z]+$/)
+        .withMessage('First name must consist only of uppercase and lowercase letters.'),
       lastName: Validation()
-                      .pattern(/^[a-zA-Z]+$/)
-                      .withMessage('Last name must consist only of uppercase and lowercase letters.'),
+        .pattern(/^[a-zA-Z]+$/)
+        .withMessage('Last name must consist only of uppercase and lowercase letters.'),
       middleInitial: Validation()
-                      .length(1)
-                      .withMessage('Middle initial must be exactly 1 character long')
+        .length(1)
+        .withMessage('Middle initial must be exactly 1 character long')
     });
 
     var result = validation.validate({
@@ -40,21 +40,25 @@ describe('Use Case #2: Validating a whole object according to a given schema', f
   });
 });
 
-describe('Use Case #3: Validating nested objects', function() {
-  it('invalidates', function() {
-    var validation = Validation({
-      name: Validation().length(4),
-      address: Validation({
-        street: Validation()
-                    .pattern(/^[0-9a-zA-Z\s]+$/)
-                    .withMessage('no special characters'),
-        zip: Validation()
-                    .pattern(/^\d+$/)
-                    .withMessage('only digits')
-      })
+describe('Validating nested objects', function() {
+  it('gives results that can be traversed with chained calls to attributeErrors', function() {
+    var nameValidation = Validation().length(4);
+
+    var addressValidation = Validation({
+      street: Validation()
+        .pattern(/^[0-9a-zA-Z\s]+$/)
+        .withMessage('no special characters'),
+      zip: Validation()
+        .pattern(/^\d+$/)
+        .withMessage('only digits')
     });
 
-    var result = validation.validate({
+    var profileValidation = Validation({
+      name: nameValidation,
+      address: addressValidation
+    });
+
+    var result = profileValidation.validate({
       name: 'Matt',
       address: {
         street: '1234 Main $treet',
@@ -63,6 +67,7 @@ describe('Use Case #3: Validating nested objects', function() {
     });
 
     expect(result.isValid()).toBeFalsy();
+
     var addressAttributeErrors = result.attributeErrors.address.attributeErrors;
     expect(addressAttributeErrors.street.errors).toContain('no special characters');
     expect(addressAttributeErrors.zip.errors).toContain('only digits');
