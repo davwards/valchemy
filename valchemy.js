@@ -3,7 +3,7 @@ var Result = require('./results/result');
 var valid = require('./results/valid');
 var usingValidation = require('./validators/using');
 var forAttribute = require('./modifiers/forAttribute');
-var combineResults = require('./combineResults');
+var combineResults = require('./infrastructure/combineResults');
 
 function Validation(schema) {
   this.validators = schema ? validatorsFromSchema(schema) : [];

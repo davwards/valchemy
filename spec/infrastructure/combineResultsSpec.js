@@ -1,8 +1,8 @@
-var combineResults = require('../combineResults');
+var combineResults = require('../../infrastructure/combineResults');
 
-var Result = require('../results/result');
-var invalid = require('../results/invalid');
-var valid = require('../results/valid');
+var Result = require('../../results/result');
+var invalid = require('../../results/invalid');
+var valid = require('../../results/valid');
 
 describe('combineResults', function() {
   describe('with two valid results', function() {
