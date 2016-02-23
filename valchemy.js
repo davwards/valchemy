@@ -1,9 +1,9 @@
 var _ = require('lodash');
-var Result = require('./results/result');
-var valid = require('./results/valid');
 var usingValidation = require('./validators/using');
 var forAttribute = require('./modifiers/forAttribute');
-var combineResults = require('./infrastructure/combineResults');
+var map = require('lodash/fp/map');
+
+var overallResult = require('./infrastructure/overallResult');
 
 function Validation(schema) {
   this.validators = schema ? validatorsFromSchema(schema) : [];
@@ -36,17 +36,13 @@ function addModifier(modifier) {
   this.validators.push(modifiedValidator);
 }
 
-function resultOfValidatorOn(value) {
-  return function(validator) {
-    return validator(value);
-  }
-}
-
 function commandsFromManifest(addWith, manifest) {
   return _.mapValues(manifest, function(factory, name) {
     return buildStep(addWith, factory);
   });
 }
+
+function mapOverValidators(fn) { return map(fn, this.validators); }
 
 _.merge(
   Validation.prototype,
@@ -54,11 +50,6 @@ _.merge(
   commandsFromManifest(addModifier, require('./modifierManifest'))
 );
 
-Validation.prototype.validate = function(value) {
-  return _.chain(this.validators)
-    .map(resultOfValidatorOn(value))
-    .reduce(combineResults, valid())
-    .value();
-};
+Validation.prototype.validate = overallResult(mapOverValidators);
 
 module.exports = function(schema) { return new Validation(schema); };
