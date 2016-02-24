@@ -79,24 +79,14 @@ validate. The `Validation` method accepts an object schema:
 
 ````javascript
 userValidation = Validation({
-  firstName: Validation()
-    .present()
-    .maxLength(10),
-  middleInitial: Validation()
-    .length(1)
-    .ifPresent(),
-  lastName: Validation()
-    .present()
-    .maxLength(10),
-  address: Validation({
-    line1: Validation()
-      .present()
-      .maxLength(20),
-    line2: Validation
-      .maxLength(10),
-    zipCode: Validation
-      .present()
-      .pattern(/\d{5}/).withMessage('Zip code must be 5 digits')
+  firstName: 			Validation().present().maxLength(10),
+  middleInitial: 		Validation().length(1).ifPresent(),
+  lastName: 			Validation().present().maxLength(10),
+  address: 				Validation({
+    line1: 				Validation().present().maxLength(20),
+    line2: 				Validation.maxLength(10),
+    zipCode: 			Validation.present()
+                            .pattern(/\d{5}/).withMessage('Zip code must be 5 digits')
   })
 });
 
