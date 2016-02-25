@@ -57,7 +57,7 @@ describe('basic validation', function() {
       expect(basicValidation.validate('Matt Rothenberg192').errors).toContain('The name must be 10 characters long');
     });
 
-    it('does not provide the given message on validaton', function() {
+    it('does not provide the given message on validation', function() {
       var basicValidation = Validation()
         .length(10).withMessage('The name must be 10 characters long');
       expect(basicValidation.validate('Elizabethe').valid).toBeTruthy();

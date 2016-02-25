@@ -29,7 +29,7 @@ describe('ifOnly modifier', function() {
     expect(modifiedValidator('banana')).toEqual(invalid('NICE TRY'));
   });
 
-  it('is always valid when the function evalutes to false', function() {
+  it('is always valid when the function evaluates to false', function() {
     var ourModifier = onlyIfModifierFactory(function() { return false; });
 
     var customValidator = function() {
@@ -41,7 +41,7 @@ describe('ifOnly modifier', function() {
     expect(modifiedValidator('banana')).toEqual(valid());
   });
 
-  it('returns the result of the original validator when the function evalutes to true', function() {
+  it('returns the result of the original validator when the function evaluates to true', function() {
 
     var ourModifier = onlyIfModifierFactory(function() { return true; });
 
