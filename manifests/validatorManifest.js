@@ -7,6 +7,7 @@ module.exports = {
     maxLength: require('../validators/maxlength'),
     pattern: require('../validators/pattern'),
     inclusion: require('../validators/inclusion'),
-    custom: require('../validators/custom')
+    custom: require('../validators/custom'), 
+    present: require('../validators/presence')
   }
 };
